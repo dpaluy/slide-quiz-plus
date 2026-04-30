@@ -33,9 +33,11 @@ import { getQuizParticipant } from "../src/quiz-manager";
 import type { ParticipantQuizManager, QuestionPayload } from "../src/quiz-manager";
 import { ParticipantConfigSchema } from "../src/quiz-types";
 import type { ParticipantConfig } from "../src/quiz-types";
+import { participantConfigFromUrlParams } from "../src/quiz-url";
 import { CLS } from "./selectors";
 
 export type { ParticipantConfig };
+export { participantConfigFromUrlParams };
 
 export function createParticipantUI(
   selector: string,

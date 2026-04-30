@@ -278,8 +278,7 @@ describe("QuizManager — Presenter mode", () => {
     // Should NOT have 3 more sync calls — they're throttled
     expect(countBeforeTimer - countAfterSetActive).toBeLessThanOrEqual(1);
 
-    vi.advanceTimersByTime(200);
-    await vi.runAllTimersAsync();
+    await vi.advanceTimersByTimeAsync(200);
 
     const countAfterTimer = vi.mocked(fetch).mock.calls.filter(
       (c) => (c[0] as string).includes("quiz-sync"),

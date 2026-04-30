@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { computeWordSizes } from "slide-quiz";
+import { buildParticipantQuizUrl, computeWordSizes, formatQuizUrlDisplay } from "slide-quiz";
 import { useQuizManager } from "../composables/useQuizManager";
 import SlideQuizQR from "./SlideQuizQR.vue";
 
@@ -9,16 +9,10 @@ const props = defineProps<{ quizId: string; question?: string; animate?: boolean
 const { results, config } = useQuizManager();
 
 const quizUrl = computed(() => {
-  if (!config?.quizUrl) return undefined;
-  const url = new URL(config.quizUrl, window.location.origin);
-  url.searchParams.set("wsUrl", config.wsUrl);
-  url.searchParams.set("quizGroupId", config.quizGroupId);
-  return url.toString();
+  return buildParticipantQuizUrl(config?.quizUrl, config);
 });
 const quizUrlDisplay = computed(() => {
-  if (!config?.quizUrl) return "";
-  const url = new URL(config.quizUrl, window.location.origin);
-  return url.host + url.pathname;
+  return formatQuizUrlDisplay(config?.quizUrl);
 });
 const votes = computed(() => results.value[props.quizId] ?? { votes: {}, total: 0 });
 const revealed = ref(false);

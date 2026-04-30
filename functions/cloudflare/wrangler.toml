@@ -1,0 +1,7 @@
+# Copy this file to your project root and update the name.
+# Set ANYCABLE_BROADCAST_URL and optional ANYCABLE_BROADCAST_KEY
+# in the Cloudflare dashboard or a local .dev.vars file.
+
+name = "my-slide-quiz"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-03-27"

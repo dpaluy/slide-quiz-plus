@@ -3,6 +3,7 @@ import { renderQR } from "./render-qr";
 import { html, type Child } from "./html";
 import { CLS } from "./selectors";
 import { JsonQuizOptionsSchema, QuizTypeSchema } from "../quiz-types";
+import { formatQuizUrlDisplay } from "../quiz-url";
 
 async function renderQRBlock(
   quizUrl: string | undefined,
@@ -16,7 +17,7 @@ async function renderQRBlock(
     <div class="sq-question__qr-side">
       ${qrImg}
       <p class="sq-question__url">
-        ${quizUrl.replace(/^https?:\/\//, "")}
+        ${formatQuizUrlDisplay(quizUrl)}
       </p>
     </div>
   `;

@@ -16,18 +16,26 @@
   <div id="quiz-root"><p class="sq-loading">Connecting...</p></div>
   <!-- Update version when slide-quiz major version changes -->
   <script type="module">
-    import { createParticipantUI } from 'https://cdn.jsdelivr.net/npm/slide-quiz@0.5/dist/participant.js';
+    import {
+      createParticipantUI,
+      participantConfigFromUrlParams,
+    } from 'https://cdn.jsdelivr.net/npm/slide-quiz@0.5/dist/participant.js';
 
     const params = new URLSearchParams(window.location.search);
-    const wsUrl = params.get('wsUrl') || 'wss://demo.anycable.io/cable';
-    const quizGroupId = params.get('quizGroupId') || 'slidev-dev';
+    const configFromUrl = participantConfigFromUrlParams(params);
+    const wsUrl = configFromUrl.wsUrl || 'wss://demo.anycable.io/cable';
+    const quizGroupId = configFromUrl.quizGroupId || 'slidev-dev';
 
     if (!params.has('wsUrl')) {
       console.warn('[slide-quiz] No wsUrl parameter — using demo server');
     }
 
     try {
-      createParticipantUI('#quiz-root', { wsUrl, quizGroupId });
+      createParticipantUI('#quiz-root', {
+        wsUrl,
+        quizGroupId,
+        endpoints: configFromUrl.endpoints,
+      });
     } catch (e) {
       console.error('[slide-quiz] Init failed:', e);
       document.getElementById('quiz-root').innerHTML =

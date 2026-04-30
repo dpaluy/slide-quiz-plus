@@ -30,7 +30,7 @@ The CLI will:
 2. Walk you through creating a free [AnyCable Plus](https://plus.anycable.io) app (provides the WebSocket infrastructure)
 3. Install `slidev-addon-slide-quiz` and configure `slides.md`
 4. Copy the audience page and serverless functions
-5. Optionally deploy to Netlify or Vercel
+5. Optionally deploy to Netlify, Vercel, or Cloudflare Pages
 
 That's it — run `npx slidev` and try your quiz.
 
@@ -124,11 +124,11 @@ slideQuiz:
 | `quizGroupId` | Yes | Unique ID grouping quizzes in this talk |
 | `quizUrl` | No | Audience page URL (shown as QR code) |
 | `titleText` | No | Default title on question slides (default: `"Pop quiz!"`) |
-| `endpoints` | No | Custom serverless function paths (for Vercel) |
+| `endpoints` | No | Custom serverless function paths (for Vercel or Cloudflare Pages) |
 
-### Vercel Endpoints
+### Custom Endpoints
 
-If deploying to Vercel, add custom endpoint paths:
+If deploying to Vercel or Cloudflare Pages, add custom endpoint paths:
 
 ```yaml
 slideQuiz:
@@ -157,7 +157,7 @@ The addon inherits your Slidev theme's colors via `currentColor`. Override `--sq
 Your presentation must be **deployed** (not just run locally) because the audience connects from their phones. The architecture has three parts:
 
 1. **AnyCable** — a managed WebSocket service that relays votes. The free tier supports up to 2,000 concurrent connections.
-2. **Your Slidev deck** — deployed to Netlify or Vercel as a static site.
+2. **Your Slidev deck** — deployed to Netlify, Vercel, or Cloudflare Pages as a static site.
 3. **Serverless functions** — receive audience votes and broadcast them via AnyCable.
 
 See the [slide-quiz README](https://github.com/anycable/slide-quiz#readme) for the full architecture overview.

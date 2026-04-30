@@ -25,9 +25,9 @@ Your presentation needs to be **deployed to the web** (not just opened locally) 
 
 1. **AnyCable** — a managed WebSocket service that relays votes between the audience and your slides. The free tier supports up to **2,000 concurrent connections**, which is plenty for conference talks and meetups.
 
-2. **Your presentation** — a static site (HTML + JS) deployed to **Netlify** or **Vercel**. The plugin adds quiz UI to your slides automatically.
+2. **Your presentation** — a static site (HTML + JS) deployed to **Netlify**, **Vercel**, or **Cloudflare Pages**. The plugin adds quiz UI to your slides automatically.
 
-3. **Serverless functions** — 3 small files that run on Netlify or Vercel. They receive answers from the audience and broadcast results via AnyCable. Secrets stay in environment variables, never in your code.
+3. **Serverless functions** — 3 small files that run on your hosting platform. They receive answers from the audience and broadcast results via AnyCable. Secrets stay in environment variables, never in your code.
 
 ```
 Presenter's slides              AnyCable              Audience phones
@@ -51,7 +51,7 @@ Both follow the same steps:
 
 1. Create a free AnyCable Plus app (provides the WebSocket infrastructure)
 2. Scaffold your project with quiz slides (Reveal.js or Slidev)
-3. Deploy to Netlify or Vercel
+3. Deploy to Netlify, Vercel, or Cloudflare Pages
 
 ### Option A: Interactive CLI (recommended)
 
@@ -66,7 +66,7 @@ The CLI will:
 2. Ask for your **WebSocket URL** and **Broadcast URL** (the two values AnyCable gives you)
 3. Scaffold a complete project with quiz slides, audience page, and serverless functions
 4. Install dependencies and initialize git
-5. Deploy via Netlify/Vercel CLI (if installed) or show manual deploy instructions
+5. Deploy via platform CLI (if installed) or show manual deploy instructions
 
 ### Option B: Add to an existing Slidev presentation
 
@@ -115,7 +115,7 @@ slideQuiz:
 ---
 ```
 
-For Vercel, also add custom endpoints:
+For Vercel or Cloudflare Pages, also add custom endpoints:
 
 ```yaml
 slideQuiz:
@@ -248,22 +248,29 @@ Add data attributes to your slides — the plugin injects all the UI automatical
 The audience needs a separate page to vote from their phones. Create a `quiz.html` and a script that mounts the participant widget:
 
 ```js
-import { createParticipantUI } from 'slide-quiz/participant';
+import {
+  createParticipantUI,
+  participantConfigFromUrlParams,
+} from 'slide-quiz/participant';
 import 'slide-quiz/participant.css';
 
+const params = new URLSearchParams(window.location.search);
+const configFromUrl = participantConfigFromUrlParams(params);
+
 createParticipantUI('#quiz-root', {
-  wsUrl: 'wss://your-cable.anycable.io/cable',
-  quizGroupId: 'my-talk',
+  wsUrl: configFromUrl.wsUrl || 'wss://your-cable.anycable.io/cable',
+  quizGroupId: configFromUrl.quizGroupId || 'my-talk',
+  endpoints: configFromUrl.endpoints,
 });
 ```
 
-That's it — questions are synced automatically from your presentation slides. No need to duplicate them here.
+That's it — questions are synced automatically from your presentation slides. No need to duplicate them here. If your QR code includes custom endpoints, this helper reads them automatically.
 
 #### 6. Add serverless functions and deploy
 
 Your presentation must be deployed — the audience needs to reach it from their phones.
 
-Copy the serverless functions from `functions/netlify/` or `functions/vercel/` into your project and set one environment variable:
+Copy the serverless functions from `functions/netlify/`, `functions/vercel/`, or `functions/cloudflare/` into your project and set the required environment variables:
 
 | Variable | Required | Description |
 |---|---|---|
@@ -300,7 +307,7 @@ If your votes are confidential or you need to restrict who can participate, see 
 
 ### Custom Endpoints
 
-For Vercel, override the default Netlify paths:
+For Vercel or Cloudflare Pages, override the default Netlify paths:
 
 ```js
 slideQuiz: {
@@ -356,7 +363,7 @@ Participant widget uses `--sq-p-*` variables — see `participant/participant.cs
 - **Requires deployment** — the audience connects over the internet, so the presentation must be hosted, not served locally.
 - **AnyCable free tier** — supports up to 2,000 concurrent connections. For larger audiences, upgrade to a paid AnyCable Plus plan.
 - **No long-term storage** — quiz results persist in sessionStorage across page refreshes, but are lost when the presenter closes the tab or browser. See [Answer Lifecycle](#answer-lifecycle) for details.
-- **Netlify and Vercel only** — the serverless functions are provided for these two platforms. Other platforms (Cloudflare Workers, AWS Lambda) would need manual porting.
+- **Platform templates included** — serverless function templates are included for Netlify, Vercel, and Cloudflare Pages. Other platforms still need manual porting.
 
 ## Answer Lifecycle
 

@@ -371,7 +371,7 @@ export class PresenterQuizManager extends QuizManager {
         const isLocal = typeof location !== "undefined" &&
           (location.hostname === "localhost" || location.hostname === "127.0.0.1");
         const hint = isLocal
-          ? "Sync won't work locally — deploy your site to Netlify or Vercel so the audience can connect."
+          ? "Sync won't work locally — deploy your site so the audience can connect."
           : `Can't reach ${this.endpoints.sync} — check that your serverless functions are deployed.`;
         this.store.syncError.set(hint);
       }

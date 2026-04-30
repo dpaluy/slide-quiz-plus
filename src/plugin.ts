@@ -8,6 +8,7 @@ import * as v from "valibot";
 import type { QuestionPayload, PresenterQuizManager } from "./quiz-manager";
 import { getQuizPresenter, removeQuizPresenter } from "./quiz-manager";
 import { QuizEndpointsSchema, JsonQuizOptionsSchema, QuizTypeSchema } from "./quiz-types";
+import { buildParticipantQuizUrl } from "./quiz-url";
 import { animateCount } from "./dom/animate";
 import { renderQuestion } from "./dom/render-question";
 import { renderResults, updateResultBars, animateResultBars } from "./dom/render-results";
@@ -114,6 +115,7 @@ export function createPlugin() {
         quizGroupId: config.quizGroupId,
         endpoints: config.endpoints,
       });
+      const participantQuizUrl = buildParticipantQuizUrl(config.quizUrl, config);
 
       const revealEl = deck.getRevealElement();
 
@@ -124,7 +126,7 @@ export function createPlugin() {
       const renderPromises: Promise<void>[] = [];
       const allQuestions: QuestionPayload[] = [];
       for (const slide of questionSlides) {
-        const p = renderQuestion(slide, config.quizUrl, config.titleText, config.hintText).catch(
+        const p = renderQuestion(slide, participantQuizUrl, config.titleText, config.hintText).catch(
           (err) => console.warn("[slide-quiz] Failed to render question slide:", err),
         );
         renderPromises.push(p);
@@ -165,13 +167,13 @@ export function createPlugin() {
         const resultType = v.parse(QuizTypeSchema, slide.dataset.quizType);
         if (resultType === "text") {
           renderPromises.push(
-            renderWordCloud(slide, config.quizUrl).catch(
+            renderWordCloud(slide, participantQuizUrl).catch(
               (err) => console.warn("[slide-quiz] Failed to render word cloud slide:", err),
             ),
           );
         } else {
           renderPromises.push(
-            renderResults(slide, config.quizUrl).catch(
+            renderResults(slide, participantQuizUrl).catch(
               (err) => console.warn("[slide-quiz] Failed to render results slide:", err),
             ),
           );

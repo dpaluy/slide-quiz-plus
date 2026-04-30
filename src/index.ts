@@ -41,6 +41,12 @@ export {
   computeWordSizes,
 } from "./quiz-types";
 export {
+  PARTICIPANT_URL_PARAMS,
+  buildParticipantQuizUrl,
+  formatQuizUrlDisplay,
+  participantConfigFromUrlParams,
+} from "./quiz-url";
+export {
   getQuizPresenter,
   getQuizParticipant,
   removeQuizPresenter,
