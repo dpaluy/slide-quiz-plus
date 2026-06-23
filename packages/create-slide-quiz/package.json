@@ -1,0 +1,35 @@
+{
+  "name": "create-slide-quiz-plus",
+  "version": "0.3.0",
+  "description": "Scaffold a Reveal.js or Slidev presentation with live audience quizzes (Netlify, Vercel, and Cloudflare Pages)",
+  "type": "module",
+  "bin": {
+    "create-slide-quiz-plus": "index.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "lib.mjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anycable/slide-quiz",
+    "directory": "packages/create-slide-quiz"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.9.1",
+    "picocolors": "^1.1.1"
+  },
+  "license": "MIT",
+  "keywords": [
+    "create",
+    "scaffolder",
+    "reveal.js",
+    "slidev",
+    "quiz",
+    "slide-quiz",
+    "anycable",
+    "cloudflare",
+    "netlify",
+    "vercel"
+  ]
+}
