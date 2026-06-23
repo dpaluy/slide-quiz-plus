@@ -4,6 +4,12 @@
 
 Add live audience quizzes to your [Reveal.js](https://revealjs.com) and [Slidev](https://sli.dev) presentations. Powered by [AnyCable](https://anycable.io).
 
+> **This is a fork of [`anycable/slide-quiz`](https://github.com/anycable/slide-quiz) that adds Cloudflare Pages support.**
+>
+> - The library itself (`slide-quiz`, `slidev-addon-slide-quiz`) is consumed unchanged from npm — those packages are maintained by AnyCable.
+> - The fork ships [`create-slide-quiz-plus`](https://www.npmjs.com/package/create-slide-quiz-plus), a patched scaffolder CLI that adds Cloudflare Pages as a deploy target (the upstream `create-slide-quiz` only supports Netlify and Vercel).
+> - Ready-to-copy Cloudflare Pages function templates live in [`functions/cloudflare/`](./functions/cloudflare/) for manual setups.
+
 **[Live Demo](https://slide-quiz-demo.netlify.app/)** — open the presenter view in one tab and the [audience page](https://slide-quiz-demo.netlify.app/quiz.html) on your phone.
 
 ## What You Get
@@ -159,7 +165,12 @@ type: text
 
 #### 5. Copy serverless functions and deploy
 
-Copy the functions from the `slide-quiz` package and set `ANYCABLE_BROADCAST_URL` on your platform. See [functions/README.md](./functions/README.md) for details.
+Copy the functions for your platform and set `ANYCABLE_BROADCAST_URL`:
+
+- **Netlify, Vercel** — copy from `node_modules/slide-quiz/functions/{netlify,vercel}/` after `npm install`
+- **Cloudflare Pages** — the upstream `slide-quiz@0.5.2` on npm does **not** ship Cloudflare templates yet. Copy them from this repo's [`functions/cloudflare/`](./functions/cloudflare/), or scaffold with `npx create-slide-quiz-plus` which bundles them.
+
+See [functions/README.md](./functions/README.md) for step-by-step instructions per platform.
 
 ### Option C: Add to an existing Reveal.js presentation
 
@@ -272,7 +283,10 @@ That's it — questions are synced automatically from your presentation slides. 
 
 Your presentation must be deployed — the audience needs to reach it from their phones.
 
-Copy the serverless functions from `functions/netlify/`, `functions/vercel/`, or `functions/cloudflare/` into your project and set the required environment variables:
+Copy the serverless functions from `functions/netlify/`, `functions/vercel/`, or `functions/cloudflare/` into your project and set the required environment variables.
+
+> **Cloudflare note:** the upstream `slide-quiz` package on npm doesn't include `functions/cloudflare/` yet. Pull those files from this repo's [`functions/cloudflare/`](./functions/cloudflare/) directly, or use `npx create-slide-quiz-plus` which bundles them.
+
 
 | Variable | Required | Description |
 |---|---|---|
