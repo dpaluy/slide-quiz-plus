@@ -58,8 +58,10 @@ Both follow the same steps:
 One command that walks you through everything — creates your AnyCable app, scaffolds the project, and optionally deploys it:
 
 ```bash
-npx create-slide-quiz
+npx create-slide-quiz-plus
 ```
+
+> Use `create-slide-quiz-plus` for **Netlify, Vercel, and Cloudflare Pages**. The upstream `create-slide-quiz` only targets Netlify and Vercel.
 
 The CLI will:
 1. Open [plus.anycable.io](https://plus.anycable.io) and guide you through creating an AnyCable app

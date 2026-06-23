@@ -14,9 +14,11 @@ Run this inside your existing Reveal.js or Slidev project directory.
 
 ## Deploy targets
 
-- **Netlify** — copies `netlify/functions/`, writes `netlify.toml`
-- **Vercel** — copies `api/`
-- **Cloudflare Pages** — copies `functions/api/`, writes `wrangler.toml`, sets up `.dev.vars`
+- **Netlify** — copies templates from the installed `slide-quiz` package into `netlify/functions/`, writes `netlify.toml`
+- **Vercel** — copies templates from the installed `slide-quiz` package into `api/`
+- **Cloudflare Pages** — copies bundled templates into `functions/api/`, writes `wrangler.toml` with a sanitized project name, sets up `.dev.vars`
+
+The Cloudflare templates ship inside this CLI (`templates/cloudflare/`), so it works against the upstream `slide-quiz` package on npm — no need to wait for a republished `slide-quiz`.
 
 Cloudflare detection looks for `wrangler.toml`, `wrangler.jsonc`, `wrangler.json`, or `.wrangler/`. If the Wrangler CLI is installed, the script can create the Pages project, push the `ANYCABLE_BROADCAST_URL` secret, and deploy.
 

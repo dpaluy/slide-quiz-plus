@@ -1,6 +1,6 @@
 {
   "name": "create-slide-quiz-plus",
-  "version": "0.3.0",
+  "version": "0.1.0",
   "description": "Scaffold a Reveal.js or Slidev presentation with live audience quizzes (Netlify, Vercel, and Cloudflare Pages)",
   "type": "module",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "files": [
     "index.mjs",
-    "lib.mjs"
+    "lib.mjs",
+    "templates"
   ],
   "repository": {
     "type": "git",

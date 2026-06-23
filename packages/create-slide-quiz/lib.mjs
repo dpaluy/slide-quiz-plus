@@ -644,38 +644,24 @@ createParticipantUI("#quiz-root", {
     }
     p.log.success("Created api/");
   } else if (platform === "cloudflare") {
-    const cfSource = join(functionsSource, "cloudflare");
+    // Cloudflare templates are bundled with this CLI (not in node_modules/slide-quiz)
+    const cfSource = join(__dirname, "templates", "cloudflare");
     const apiSource = join(cfSource, "api");
 
-    if (!existsSync(apiSource)) {
-      p.log.warn("slide-quiz is installed but missing functions/cloudflare/api/ — upgrade slide-quiz and re-run.");
-    } else {
-      const fnDir = join(dir, "functions", "api");
-      mkdirSync(fnDir, { recursive: true });
-      for (const f of readdirSync(apiSource)) {
-        if (!existsSync(join(fnDir, f))) {
-          copyFileSync(join(apiSource, f), join(fnDir, f));
-        }
+    const fnDir = join(dir, "functions", "api");
+    mkdirSync(fnDir, { recursive: true });
+    for (const f of readdirSync(apiSource)) {
+      if (!existsSync(join(fnDir, f))) {
+        copyFileSync(join(apiSource, f), join(fnDir, f));
       }
-      p.log.success("Created functions/api/");
     }
+    p.log.success("Created functions/api/");
 
     const wranglerPath = join(dir, "wrangler.toml");
     if (!existsSync(wranglerPath)) {
       const cfName = sanitizeCloudflareName(quizGroupId);
-      const wranglerSource = join(cfSource, "wrangler.toml");
-      let wranglerContent;
-      if (existsSync(wranglerSource)) {
-        wranglerContent = readFileSync(wranglerSource, "utf-8")
-          .replace(/^name\s*=\s*".*"/m, `name = "${cfName}"`);
-      } else {
-        wranglerContent = [
-          `name = "${cfName}"`,
-          `pages_build_output_dir = "dist"`,
-          `compatibility_date = "2026-03-27"`,
-          "",
-        ].join("\n");
-      }
+      const wranglerContent = readFileSync(join(cfSource, "wrangler.toml"), "utf-8")
+        .replace(/^name\s*=\s*".*"/m, `name = "${cfName}"`);
       writeFileSync(wranglerPath, wranglerContent);
       p.log.success("Created wrangler.toml");
     } else {
